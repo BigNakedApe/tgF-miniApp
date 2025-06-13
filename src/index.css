@@ -3,35 +3,77 @@
 @tailwind utilities;
 
 body {
-  background-color: #1A1A1A;
-  color: #FFFFFF;
-  font-family: Arial, sans-serif;
+  @apply bg-gradient-to-b from-primary-blue to-gray-900 min-h-screen text-text-light font-sans flex flex-col items-center;
+}
+
+.container {
+  @apply max-w-2xl w-full mx-auto p-6 flex flex-col items-center;
+}
+
+.card {
+  @apply bg-gray-800 rounded-xl shadow-lg p-6 w-full mb-6 animate-fade-in;
+}
+
+.navbar {
+  @apply flex justify-center gap-4 bg-accent-blue/10 p-4 rounded-xl mb-8 shadow-md w-full max-w-md mx-auto;
+}
+
+.navbar a {
+  @apply flex items-center gap-2 px-4 py-2 rounded-md transition duration-300 hover:bg-accent-blue hover:text-white text-sm font-semibold;
+}
+
+.navbar a.active {
+  @apply bg-accent-blue text-white;
 }
 
 .btn-primary {
-  @apply bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-200;
+  @apply bg-gradient-to-r from-accent-blue to-blue-700 text-white px-6 py-3 rounded-lg shadow-md hover:scale-105 hover:shadow-xl transition duration-300 transform disabled:opacity-50 disabled:cursor-not-allowed;
 }
 
 .btn-secondary {
-  @apply bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 transition duration-200;
-}
-
-input, select, textarea {
-  @apply bg-gray-700 text-white border border-blue-500 rounded p-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500;
+  @apply bg-secondary-gray text-white px-6 py-3 rounded-lg shadow-md hover:scale-105 hover:shadow-xl transition duration-300 transform;
 }
 
 .error {
-  @apply text-red-500 mb-4;
+  @apply text-error-red mt-2 text-sm font-medium;
+}
+
+input, textarea, select {
+  @apply w-full p-3 border border-gray-600 rounded-lg bg-gray-900 text-text-light focus:outline-none focus:ring-2 focus:ring-accent-blue transition duration-300 placeholder-gray-500;
 }
 
 table {
-  @apply w-full text-left border-collapse;
+  @apply w-full border-collapse bg-gray-900 rounded-xl shadow-md overflow-hidden;
 }
 
 th, td {
-  @apply border-b border-gray-600 py-2 px-4;
+  @apply p-4 text-left;
 }
 
 th {
-  @apply font-bold;
+  @apply bg-accent-blue/10 font-semibold text-text-light;
+}
+
+tr {
+  @apply border-b border-gray-700 hover:bg-gray-800 transition duration-300;
+}
+
+.status-badge {
+  @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+}
+
+.status-pending {
+  @apply bg-yellow-500/20 text-yellow-400;
+}
+
+.status-completed {
+  @apply bg-green-500/20 text-green-400;
+}
+
+.status-cancelled {
+  @apply bg-red-500/20 text-red-400;
+}
+
+.toast {
+  @apply fixed bottom-4 right-4 bg-accent-blue text-white px-6 py-3 rounded-lg shadow-xl flex items-center gap-2 animate-slide-in;
 }

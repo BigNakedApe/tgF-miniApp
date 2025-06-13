@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createDeal } from '../utils/api';
 import { currencies } from '../constants';
@@ -31,7 +31,7 @@ function CreateDeal() {
       await createDeal({
         ...form,
         creator_id: window.Telegram.WebApp.initDataUnsafe.user?.id,
-        receiving_nickname: parseInt(form.receiving_nickname)
+        receiving_nickname: parseInt(form.receiving_nickname) // Отправляем числовой Telegram ID
       });
       setShowToast(true);
       setTimeout(() => {
@@ -56,6 +56,7 @@ function CreateDeal() {
             onChange={(e) => setForm({ ...form, receiving_nickname: e.target.value })}
             required
             placeholder="Enter Telegram ID"
+            className="w-full"
           />
         </div>
         <div>

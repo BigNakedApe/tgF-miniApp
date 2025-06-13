@@ -1,11 +1,26 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 function Navbar() {
   return (
-    <nav className="flex justify-around p-4 bg-gray-900 sticky top-0 z-10">
-      <Link to="/" className="text-blue-400 hover:text-blue-300 transition duration-200">Create Deal</Link>
-      <Link to="/history" className="text-blue-400 hover:text-blue-300 transition duration-200">History</Link>
-      <Link to="/profile" className="text-blue-400 hover:text-blue-300 transition duration-200">Profile</Link>
+    <nav className="navbar">
+      <NavLink to="/" activeClassName="active">
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+        </svg>
+        Create Deal
+      </NavLink>
+      <NavLink to="/history" activeClassName="active">
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        History
+      </NavLink>
+      <NavLink to="/profile" activeClassName="active">
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
+        Profile
+      </NavLink>
     </nav>
   );
 }

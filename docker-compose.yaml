@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=${VITE_API_URL:-http://bot:8000}
+    networks:
+      - app-network
+    depends_on:
+      - bot
+
+  # Пример сервиса для бэкенда (раскомментируйте и настройте под ваш бэкенд)
+  # bot:
+  #   build:
+  #     context: ../tgF-backend  # Путь к папке бэкенда
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8000:8000"
+  #   environment:
+  #     - DATABASE_URL=postgresql://user:password@db:5432/tgf_db  # Пример
+  #   networks:
+  #     - app-network
+  #   depends_on:
+  #     - db
+  #
+  # db:
+  #   image: postgres:14
+  #   environment:
+  #     - POSTGRES_USER=user
+  #     - POSTGRES_PASSWORD=password
+  #     - POSTGRES_DB=tgf_db
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   networks:
+  #     - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+# volumes:
+#   postgres_data:

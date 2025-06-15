@@ -9,29 +9,34 @@ function CreateDeal() {
     receiving_nickname: '',
     description_for_creator: '',
     description_for_recever: '',
-    conditions_for_creator_payment: { usdt: 0, stars: 0 },
-    conditions_for_recever_payment: { usdt: 0, stars: 0 }
+    creator_currency: 'usdt',
+    creator_amount: '',
+    receiver_currency: 'usdt',
+    receiver_amount: ''
   });
   const [error, setError] = useState('');
   const [showToast, setShowToast] = useState(false);
 
-  const handlePaymentChange = (type, currency, value) => {
-    setForm({
-      ...form,
-      [type]: {
-        ...form[type],
-        [currency.apiValue]: parseFloat(value) || 0
-      }
-    });
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!form.receiving_nickname.trim()) {
+      setError('Receiving nickname is required');
+      return;
+    }
+    if (!form.creator_amount || !form.receiver_amount) {
+      setError('Amounts are required');
+      return;
+    }
     try {
       await createDeal({
         ...form,
         creator_id: window.Telegram.WebApp.initDataUnsafe.user?.id,
-        receiving_nickname: parseInt(form.receiving_nickname) // Отправляем числовой Telegram ID
+        creator_amount: parseFloat(form.creator_amount),
+        receiver_amount: parseFloat(form.receiver_amount)
       });
       setShowToast(true);
       setTimeout(() => {
@@ -49,68 +54,99 @@ function CreateDeal() {
       {error && <p className="error">{error}</p>}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block mb-1 font-medium">Receiving Telegram ID</label>
+          <label className="block mb-1 font-medium">Receiving Telegram Nickname</label>
           <input
-            type="number"
+            type="text"
+            name="receiving_nickname"
             value={form.receiving_nickname}
-            onChange={(e) => setForm({ ...form, receiving_nickname: e.target.value })}
+            onChange={handleChange}
             required
-            placeholder="Enter Telegram ID"
+            placeholder="@username"
             className="w-full"
           />
         </div>
         <div>
           <label className="block mb-1 font-medium">Description for Creator</label>
           <textarea
+            name="description_for_creator"
             value={form.description_for_creator}
-            onChange={(e) => setForm({ ...form, description_for_creator: e.target.value })}
+            onChange={handleChange}
             required
             placeholder="What creator needs to do"
             rows="4"
+            className="w-full"
           ></textarea>
         </div>
         <div>
           <label className="block mb-1 font-medium">Description for Receiver</label>
           <textarea
+            name="description_for_recever"
             value={form.description_for_recever}
-            onChange={(e) => setForm({ ...form, description_for_recever: e.target.value })}
+            onChange={handleChange}
             required
             placeholder="What receiver needs to do"
             rows="4"
+            className="w-full"
           ></textarea>
         </div>
         <div>
-          <label className="block mb-1 font-medium">Creator Payment Conditions</label>
+          <label className="block mb-1 font-medium">Creator Payment</label>
           <div className="grid grid-cols-2 gap-4">
-            {currencies.map(c => (
-              <div key={c.value}>
-                <label className="block mb-1 text-sm">{c.label}</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  value={form.conditions_for_creator_payment[c.apiValue] || ''}
-                  onChange={(e) => handlePaymentChange('conditions_for_creator_payment', c, e.target.value)}
-                  placeholder={`Amount in ${c.label}`}
-                />
-              </div>
-            ))}
+            <div>
+              <label className="block mb-1 text-sm">Currency</label>
+              <select
+                name="creator_currency"
+                value={form.creator_currency}
+                onChange={handleChange}
+                className="w-full"
+              >
+                {currencies.map(c => (
+                  <option key={c.value} value={c.value}>{c.label}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block mb-1 text-sm">Amount</label>
+              <input
+                type="number"
+                step="0.01"
+                name="creator_amount"
+                value={form.creator_amount}
+                onChange={handleChange}
+                placeholder="Amount"
+                className="w-full"
+              />
+            </div>
           </div>
         </div>
         <div>
-          <label className="block mb-1 font-medium">Receiver Payment Conditions</label>
+          <label className="block mb-1 font-medium">Receiver Payment</label>
           <div className="grid grid-cols-2 gap-4">
-            {currencies.map(c => (
-              <div key={c.value}>
-                <label className="block mb-1 text-sm">{c.label}</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  value={form.conditions_for_recever_payment[c.apiValue] || ''}
-                  onChange={(e) => handlePaymentChange('conditions_for_recever_payment', c, e.target.value)}
-                  placeholder={`Amount in ${c.label}`}
-                />
-              </div>
-            ))}
+            <div>
+              <label className="block mb-1 text-sm">Currency</label>
+              <select
+                name="receiver_currency"
+                value={form.receiver_currency}
+                onChange={handleChange}
+                className="w-full"
+              >
+                {currencies.map(c => (
+                  <option key={c.value} value={c.value}>{c.label}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block mb-1 text-sm">Amount</label>
+              <input
+                type="number"
+                step="0.01"
+                name="receiver_amount"
+                value={form.receiver_amount}
+                onChange={handleChange}
+                placeholder="Amount"
+                className="w-full"
+              />
+            </div>
           </div>
         </div>
         <button type="submit" className="btn-primary w-full">Create Deal</button>

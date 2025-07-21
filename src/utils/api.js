@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_URL = import.meta.env.VITE_API_URL || process.env.VITE_API_URL || 'http://backend:8000';
 
 export const getUserByTelegramId = async (telegramId) => {
   try {
